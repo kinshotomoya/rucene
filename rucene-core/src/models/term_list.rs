@@ -111,7 +111,9 @@ impl Node {
         } else {
             // TODO:
             //  for文回してkeyの順序を計算しながらleaf nodeまで深く潜る
-            self.children.iter_mut().for_each(|a| ());
+            for entry in self.children.iter_mut() {
+                // TODO: 再帰でinsertする
+            }
         }
     }
 }
