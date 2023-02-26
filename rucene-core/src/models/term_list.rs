@@ -65,6 +65,7 @@ impl Ord for Entry {
     }
 }
 
+
 impl Entry {
     fn new(
         key: Option<String>,
@@ -88,32 +89,55 @@ impl Node {
         }
     }
 
-    // TODO: 同じkeyが出てきたら、valueをPostingsListWrapperのpostings_listのlinked listの先頭に追加する
     fn add_posting_list() {}
 
     fn insert(&mut self, key: String, value: PostingsListWrapper) {
-        let entry = Entry::new(Some(key), Some(value), None);
-        if self.num_of_children == 0 {
-            if self.children.len() != ORDER - 1 {
-                // リーフノード&&childrenの数上限では（order - 1）ではない場合
-                match self.children.binary_search(&entry) {
-                    //  参考：https://stackoverflow.com/questions/36249693/whats-the-most-efficient-way-to-insert-an-element-into-a-sorted-vector
-                    Ok(exist_index) => Node::add_posting_list(),
-                    Err(new_index) => {
-                        self.children.insert(new_index, entry);
-                        self.num_of_children = self.children.len() as i32
+        fn inner_loop(insert_key: &str, node: &mut Node, new_entry: Entry) {
+            for entry in node.children.iter_mut() {
+                if node.num_of_children == 0 {
+                    match node.children.binary_search(&new_entry) {
+                        //  参考：https://stackoverflow.com/questions/36249693/whats-the-most-efficient-way-to-insert-an-element-into-a-sorted-vector
+                        Ok(exist_index) => {
+                            // TODO: 同じkeyが出てきたら、valueをPostingsListWrapperのpostings_listのlinked listの先頭に追加する
+                            Node::add_posting_list()
+                        },
+                        Err(new_index) => {
+                            // TODO: cloneやめたいがどうしようか
+                            node.children.insert(new_index, new_entry.clone());
+                            node.num_of_children = node.children.len() as i32;
+                        }
+                    }
+                    break;
+                } else {
+                    // TODO: 続き、子ノードが存在する場合
+                    match &entry.key {
+                        Some(key_str) => {
+                            if insert_key < key_str  {
+                                match &entry.next {
+                                    Some(mut node) => {
+                                        // TODO: cloneやめたいがどうしようか
+                                        inner_loop(insert_key,  &mut node, new_entry.clone())
+                                    },
+                                    None => {
+                                        // リーフノードの場合
+                                    }
+                                }
+                            } else {
+                                continue
+                            }
+                        },
+                        None => {
+                            if entry.next.is_some() {
+                                // こノードが存在する場合
+                            } else {
+                                // リーフノードの場合
+                            }
+                        }
                     }
                 }
-            } else {
-                // リーフノード&&childrenの数が上限（order）の場合
-                // => 分割してbottom upでnodeを作成する必要がある
-            }
-        } else {
-            // TODO:
-            //  for文回してkeyの順序を計算しながらleaf nodeまで深く潜る
-            for entry in self.children.iter_mut() {
-                // TODO: 再帰でinsertする
             }
         }
+        let new_entry = Entry::new(Some(key), Some(value), None);
+        inner_loop(key.as_str(), &mut self, new_entry);
     }
 }
