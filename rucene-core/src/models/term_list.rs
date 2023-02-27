@@ -1,13 +1,23 @@
+// 利用していない
+
 use crate::models::inverted_index::PostingsListWrapper;
 use std::arch::x86_64::_mm256_insert_epi16;
 use std::cmp::Ordering;
 use std::collections::HashMap;
+use crate::models::postings_list::PostingsList;
 // btreeで実装（完成後、b+treeでも作ってみる）
 // 参考：https://www.javatips.net/api/algs4-master/src/main/java/edu/princeton/cs/algs4/BTree.java
 
 // 一旦orderは4で作成してみる
 // 本来ならディスクのブロックサイズを考慮したorder数にすべきだがまたの機会に調整
 static ORDER: usize = 4;
+
+pub struct PostingsListWrapper {
+    document_count: i32, // 対象単語が出現するドキュメントの総数（linked listで紐付くPostingsList自体の総数）
+    positions_count: i32, // 全ドキュメント内での対象の単語が出現する回数（PostingsListのpostings_countの総数）
+    postings_list: Box<PostingsList>, // 対象のポスティングリストへのポインタ
+}
+
 
 pub struct TermList {
     root: Node,
