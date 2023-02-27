@@ -1,5 +1,5 @@
-use std::collections::HashMap;
-use crate::models::postings_list::PostingsList;
+use std::collections::{HashMap, LinkedList};
+use crate::models::postings_list::Posting;
 use crate::models::term_list::TermList;
 
 // ハッシュマップでドキュメントとポスティングリストのマッピングを実現している
@@ -9,7 +9,7 @@ use crate::models::term_list::TermList;
 type TokenId = i32;
 
 pub struct InvertedIndex {
-    index: HashMap<TokenId, PostingsList>, // tokenIdとポスティングリストのハッシュマップ
+    index: HashMap<TokenId, LinkedList<Posting>>, // tokenIdとポスティングリストのハッシュマップ
     total_doc_count: i32 // ドキュメントの総数
 }
 
@@ -20,4 +20,14 @@ impl InvertedIndex {
             total_doc_count: 0
         }
     }
+
+    // TODO: 続き！
+    fn add_document(title: &str, content: &str) {
+        // title, contentをスペースでsplitしてトークン取得
+        // トークンをmysqlに保存する（すでに同じトークンがあればそのtokenIdを取得する）
+        // ドキュメントをmysqlに保存する
+        // tokenid、docidから転置インデックスを作成する
+        todo!()
+    }
+
 }
