@@ -27,6 +27,7 @@ impl InvertedIndex {
         // トークンをmysqlに保存する（すでに同じトークンがあればそのtokenIdを取得する）
         // ドキュメントをmysqlに保存する
         // tokenid、docidから転置インデックスを作成する
+        
         todo!()
     }
 
