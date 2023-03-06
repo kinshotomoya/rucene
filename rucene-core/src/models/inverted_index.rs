@@ -1,6 +1,5 @@
 use std::collections::{HashMap, LinkedList};
 use crate::models::postings_list::Posting;
-use crate::models::term_list::TermList;
 
 // ハッシュマップでドキュメントとポスティングリストのマッピングを実現している
 // [重要] 本ではタームリスト自体はRDBで管理している。なので自前でタームリストのb+treeデータ構造を作成・持つ必要はない
@@ -23,11 +22,12 @@ impl InvertedIndex {
 
     // TODO: 続き！
     fn add_document(title: &str, content: &str) {
+        // 日本語形態素解析で形態素分解する
         // title, contentをスペースでsplitしてトークン取得
         // トークンをmysqlに保存する（すでに同じトークンがあればそのtokenIdを取得する）
         // ドキュメントをmysqlに保存する
         // tokenid、docidから転置インデックスを作成する
-        
+
         todo!()
     }
 
