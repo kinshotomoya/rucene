@@ -7,4 +7,4 @@ edition = "2021"
 
 [dependencies]
 diesel = { version = "1.4.8", features = ["mysql", "r2d2"] }
-lindera = { version = "0.22.1", features = ["ipadic"] }
+lindera = { version = "0.22.1", features = ["ipadic"] } # https://github.com/lindera-morphology/lindera
